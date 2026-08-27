@@ -130,7 +130,7 @@ export function Hero() {
               }}
             >
               <Image
-                src="/kant-sdev.JPEG"
+                src="/kant-sdev.jpeg"
                 alt="Kauã Cantanhede — Software Engineer"
                 width={640}
                 height={640}
