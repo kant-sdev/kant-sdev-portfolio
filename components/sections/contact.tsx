@@ -4,6 +4,8 @@ import { useState, type FormEvent } from "react";
 import { ArrowRight, ArrowUpRight, Mail } from "lucide-react";
 import { motion, useReducedMotion, type Variants } from "motion/react";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
+import { useLocale } from "@/components/i18n/locale-provider";
+import type { Dictionary } from "@/data/i18n";
 
 import {
   contactFormConfig,
@@ -49,7 +51,8 @@ const linkSequence: Variants = {
 
 type FormStatus = "idle" | "submitting" | "success" | "error";
 type FieldName = "name" | "email" | "message";
-type FieldErrors = Partial<Record<FieldName, string>>;
+type FieldError = keyof Dictionary["contact"]["form"]["validation"];
+type FieldErrors = Partial<Record<FieldName, FieldError>>;
 type ContactField = HTMLInputElement | HTMLTextAreaElement;
 
 const fieldNames: FieldName[] = ["name", "email", "message"];
@@ -67,20 +70,20 @@ function ContactIcon({ channel }: { channel: ContactChannel }) {
   }
 }
 
-function getFieldError(field: ContactField) {
+function getFieldError(field: ContactField): FieldError | undefined {
   const value = field.value.trim();
 
   if (!value) {
     return field.name === "message"
-      ? "Conte brevemente como posso ajudar."
-      : `Informe seu ${field.name === "name" ? "nome" : "email"}.`;
+      ? "messageRequired"
+      : field.name === "name" ? "nameRequired" : "emailRequired";
   }
 
   if (field.name === "email" && field.validity.typeMismatch) {
-    return "Informe um email válido.";
+    return "emailInvalid";
   }
 
-  return "";
+  return undefined;
 }
 
 function ContactLinkCard({
@@ -90,14 +93,16 @@ function ContactLinkCard({
   link: ContactLink;
   shouldReduceMotion: boolean | null;
 }) {
+  const { content } = useLocale();
+  const label = content.contact.channels[link.channel];
   return (
     <motion.li variants={revealContent}>
       <motion.a
         href={link.href}
         target={link.external ? "_blank" : undefined}
         rel={link.external ? "noopener noreferrer" : undefined}
-        aria-label={`${link.label}: ${link.description}${
-          link.external ? " (abre em uma nova aba)" : ""
+        aria-label={`${label}: ${link.description}${
+          link.external ? content.common.newTab : ""
         }`}
         whileHover={shouldReduceMotion ? undefined : { y: -2 }}
         transition={{ duration: 0.18, ease: "easeOut" }}
@@ -106,7 +111,7 @@ function ContactLinkCard({
         <span className="flex min-w-0 flex-col justify-between gap-5">
           <span className="flex items-center gap-2 text-sm font-semibold text-foreground">
             <ContactIcon channel={link.channel} />
-            {link.label}
+            {label}
           </span>
           <span className="break-words text-xs leading-5 text-muted-foreground sm:text-sm">
             {link.description}
@@ -123,6 +128,8 @@ function ContactLinkCard({
 }
 
 export function Contact() {
+  const { content } = useLocale();
+  const formContent = content.contact.form;
   const shouldReduceMotion = useReducedMotion();
   const [formStatus, setFormStatus] = useState<FormStatus>("idle");
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
@@ -213,21 +220,20 @@ export function Contact() {
             variants={revealContent}
             className="text-xs font-semibold tracking-[0.18em] text-foreground uppercase"
           >
-            Contact
+            {content.contact.eyebrow}
           </motion.p>
           <motion.h2
             id="contact-title"
             variants={revealContent}
             className="mt-5 text-[clamp(2.75rem,6vw,5.5rem)] leading-[0.95] font-semibold tracking-[-0.065em] text-balance text-foreground"
           >
-            Vamos conversar.
+            {content.contact.title}
           </motion.h2>
           <motion.p
             variants={revealContent}
             className="mt-7 max-w-3xl text-sm leading-7 text-pretty text-muted-foreground sm:text-base sm:leading-8"
           >
-            Seja para uma oportunidade profissional, um projeto ou uma ideia
-            que vale a pena explorar, estou aberto a novas conversas.
+            {content.contact.description}
           </motion.p>
         </motion.header>
 
@@ -244,10 +250,10 @@ export function Contact() {
               id="connect-title"
               className="text-xs font-semibold tracking-[0.18em] text-foreground uppercase"
             >
-              Connect
+              {content.contact.connect}
             </h3>
             <p className="mt-3 text-sm leading-6 text-muted-foreground">
-              Encontre-me também por aqui.
+              {content.contact.connectDescription}
             </p>
 
             <motion.ul
@@ -273,7 +279,7 @@ export function Contact() {
               id="contact-form-title"
               className="text-xs font-semibold tracking-[0.18em] text-foreground uppercase"
             >
-              Send a message
+              {formContent.title}
             </h3>
 
             <form className="mt-8 space-y-6" noValidate onSubmit={handleSubmit}>
@@ -282,7 +288,7 @@ export function Contact() {
                   htmlFor="contact-name"
                   className="text-xs font-medium text-foreground"
                 >
-                  Nome
+                  {formContent.name}
                 </label>
                 <input
                   id="contact-name"
@@ -290,7 +296,7 @@ export function Contact() {
                   type="text"
                   autoComplete="name"
                   required
-                  placeholder="Seu nome"
+                  placeholder={formContent.namePlaceholder}
                   aria-invalid={fieldErrors.name ? true : undefined}
                   aria-describedby={
                     fieldErrors.name ? "contact-name-error" : undefined
@@ -300,7 +306,7 @@ export function Contact() {
                 />
                 {fieldErrors.name ? (
                   <p id="contact-name-error" className={errorStyles}>
-                    {fieldErrors.name}
+                    {formContent.validation[fieldErrors.name]}
                   </p>
                 ) : null}
               </div>
@@ -310,7 +316,7 @@ export function Contact() {
                   htmlFor="contact-email"
                   className="text-xs font-medium text-foreground"
                 >
-                  Email
+                  {formContent.email}
                 </label>
                 <input
                   id="contact-email"
@@ -319,7 +325,7 @@ export function Contact() {
                   inputMode="email"
                   autoComplete="email"
                   required
-                  placeholder="seu@email.com"
+                  placeholder={formContent.emailPlaceholder}
                   aria-invalid={fieldErrors.email ? true : undefined}
                   aria-describedby={
                     fieldErrors.email ? "contact-email-error" : undefined
@@ -329,7 +335,7 @@ export function Contact() {
                 />
                 {fieldErrors.email ? (
                   <p id="contact-email-error" className={errorStyles}>
-                    {fieldErrors.email}
+                    {formContent.validation[fieldErrors.email]}
                   </p>
                 ) : null}
               </div>
@@ -339,14 +345,14 @@ export function Contact() {
                   htmlFor="contact-message"
                   className="text-xs font-medium text-foreground"
                 >
-                  Mensagem
+                  {formContent.message}
                 </label>
                 <textarea
                   id="contact-message"
                   name="message"
                   rows={5}
                   required
-                  placeholder="Como posso ajudar?"
+                  placeholder={formContent.messagePlaceholder}
                   aria-invalid={fieldErrors.message ? true : undefined}
                   aria-describedby={
                     fieldErrors.message ? "contact-message-error" : undefined
@@ -356,7 +362,7 @@ export function Contact() {
                 />
                 {fieldErrors.message ? (
                   <p id="contact-message-error" className={errorStyles}>
-                    {fieldErrors.message}
+                    {formContent.validation[fieldErrors.message]}
                   </p>
                 ) : null}
               </div>
@@ -368,8 +374,8 @@ export function Contact() {
                   className="group inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-sm bg-foreground px-5 py-3 text-sm font-medium text-background transition-colors hover:bg-foreground/85 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-wait disabled:opacity-60 motion-reduce:transition-none sm:w-auto"
                 >
                   {formStatus === "submitting"
-                    ? "Enviando..."
-                    : "Enviar mensagem"}
+                    ? formContent.submitting
+                    : formContent.submit}
                   <ArrowRight
                     className="size-4 transition-transform duration-200 group-hover:translate-x-0.5 motion-reduce:transform-none motion-reduce:transition-none"
                     aria-hidden="true"
@@ -385,11 +391,11 @@ export function Contact() {
                   }`}
                 >
                   {formStatus === "success"
-                    ? "Mensagem enviada. Obrigado pelo contato."
+                    ? formContent.success
                     : formStatus === "error"
                       ? contactFormConfig.endpoint
-                        ? "Não foi possível enviar agora. Tente novamente ou use um dos canais ao lado."
-                        : "O envio direto ainda não está integrado. Use um dos canais ao lado."
+                        ? formContent.error
+                        : formContent.unavailable
                       : ""}
                 </p>
               </div>

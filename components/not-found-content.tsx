@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { motion, useReducedMotion, type Variants } from "motion/react";
+import { useLocale } from "@/components/i18n/locale-provider";
+import { LocalizedMetadata } from "@/components/i18n/localized-metadata";
 
 const pageSequence: Variants = {
   hidden: {},
@@ -48,6 +50,7 @@ const linkBaseStyles =
   "inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-sm px-5 py-3 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background motion-reduce:transition-none sm:w-auto";
 
 export function NotFoundContent() {
+  const { content } = useLocale();
   const shouldReduceMotion = useReducedMotion();
 
   return (
@@ -58,12 +61,13 @@ export function NotFoundContent() {
       variants={pageSequence}
       className="flex flex-1"
     >
+      <LocalizedMetadata page="notFound" />
       <div className="mx-auto flex w-full max-w-7xl flex-1 flex-col px-4 py-12 sm:px-6 sm:py-16 lg:px-8 lg:py-20">
         <motion.p
           variants={revealItem}
           className="text-xs font-semibold tracking-[0.18em] text-foreground uppercase"
         >
-          404 / Not Found
+          {content.notFound.eyebrow}
         </motion.p>
 
         <div className="flex flex-1 flex-col justify-center py-12 sm:py-16 lg:py-20">
@@ -84,15 +88,14 @@ export function NotFoundContent() {
               variants={revealItem}
               className="text-[clamp(2.5rem,6vw,5.5rem)] leading-[0.95] font-semibold tracking-[-0.065em] text-balance text-foreground"
             >
-              Essa página não existe.
+              {content.notFound.title}
             </motion.h1>
 
             <motion.p
               variants={revealItem}
               className="mt-7 max-w-2xl text-sm leading-7 text-pretty text-muted-foreground sm:text-base sm:leading-8"
             >
-              O endereço solicitado não corresponde a nenhum recurso disponível
-              neste portfólio.
+              {content.notFound.description}
             </motion.p>
 
             <motion.div
@@ -103,14 +106,14 @@ export function NotFoundContent() {
                 href="/"
                 className={`${linkBaseStyles} bg-foreground text-background hover:bg-foreground/85`}
               >
-                Voltar para o início
+                {content.common.backHome}
                 <ArrowRight className="size-4" aria-hidden="true" />
               </Link>
               <Link
                 href="/#projects"
                 className={`${linkBaseStyles} border border-border bg-background text-foreground hover:bg-muted`}
               >
-                Ver projetos
+                {content.common.viewProjects}
                 <ArrowRight className="size-4" aria-hidden="true" />
               </Link>
             </motion.div>

@@ -6,6 +6,7 @@ import { motion, useReducedMotion, type Variants } from "motion/react";
 
 import { TechnologyTag } from "@/components/ui/technology-tag";
 import { coreStack, type CoreStackTechnology } from "@/data/core-stack";
+import { useLocale } from "@/components/i18n/locale-provider";
 
 const sectionSequence: Variants = {
   hidden: {},
@@ -75,6 +76,7 @@ function StackItem({ name, href, category, emphasis }: StackItemProps) {
 }
 
 export function CoreStack() {
+  const { content } = useLocale();
   const shouldReduceMotion = useReducedMotion();
 
   return (
@@ -97,14 +99,13 @@ export function CoreStack() {
             variants={revealContent}
             className="text-[clamp(2.5rem,6vw,5.5rem)] leading-[0.95] font-semibold tracking-[-0.065em] text-balance text-foreground"
           >
-            Core Stack
+            {content.coreStack.title}
           </motion.h2>
           <motion.p
             variants={revealContent}
             className="mx-auto mt-7 max-w-2xl text-sm leading-7 text-pretty text-muted-foreground sm:text-base sm:leading-8"
           >
-            A stack que utilizo para construir aplicações, integrando backend,
-            dados, frontend e infraestrutura.
+            {content.coreStack.description}
           </motion.p>
         </motion.header>
 
@@ -120,7 +121,7 @@ export function CoreStack() {
                 id={`${group.id}-title`}
                 className="max-w-xs text-sm leading-6 font-semibold text-foreground"
               >
-                {group.category}
+                {content.coreStack.categories[group.id]}
               </h3>
 
               <motion.ul
@@ -131,7 +132,7 @@ export function CoreStack() {
                   <StackItem
                     key={technology.name}
                     {...technology}
-                    category={group.category}
+                    category={content.coreStack.categories[group.id]}
                   />
                 ))}
               </motion.ul>
@@ -141,10 +142,10 @@ export function CoreStack() {
 
         <motion.div variants={revealContent} className="mt-10 text-center">
           <Link
-            href="/mapa-tecnico"
+            href="/technical-map"
             className="inline-flex min-h-11 items-center gap-2 rounded-sm px-3 py-2 text-sm font-medium text-foreground transition-colors hover:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
           >
-            Explorar mapa técnico
+            {content.coreStack.explore}
             <ArrowRight className="size-4" aria-hidden="true" />
           </Link>
         </motion.div>

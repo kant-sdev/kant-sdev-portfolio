@@ -1,18 +1,20 @@
 export const navigation = [
   {
-    label: "Sobre",
+    id: "about",
     href: "/#about",
   },
   {
-    label: "Projetos",
-    href: "/projetos",
+    id: "projects",
+    href: "/projects",
   },
   {
-    label: "Mapa Técnico",
-    href: "/mapa-tecnico",
+    id: "technicalMap",
+    href: "/technical-map",
   },
   {
-    label: "Contato",
+    id: "contact",
     href: "/#contact",
   },
-];
+] as const;
+
+export type NavigationId = (typeof navigation)[number]["id"];

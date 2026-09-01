@@ -1,13 +1,12 @@
-import type { Project } from "@/types/projects";
+import { content } from "@/data/i18n";
+import { defaultLocale, type Locale } from "@/lib/i18n/config";
+import type { Project, ProjectDefinition } from "@/types/projects";
 
-export const projects: Project[] = [
+export const projects = [
   {
     id: "finvise",
     title: "FinVise",
     slug: "finvise",
-    category: "Product · Hackathon · Full Stack",
-    description:
-      "Plataforma de inteligência financeira que transforma transações e extratos em análises financeiras, recomendações e interações com um agente conversacional.",
     technologies: [
       { name: "Java", featured: true },
       { name: "Spring Boot", featured: true },
@@ -26,9 +25,6 @@ export const projects: Project[] = [
     id: "forumhub",
     title: "FórumHub",
     slug: "forumhub",
-    category: "Backend · API REST · Java",
-    description:
-      "API REST para um sistema de fóruns, desenvolvida com Java e Spring Boot, utilizando arquitetura em camadas, persistência de dados e autenticação.",
     technologies: [
       { name: "Java", featured: true },
       { name: "Spring Boot", featured: true },
@@ -43,9 +39,6 @@ export const projects: Project[] = [
     id: "literalura",
     title: "LiterAlura",
     slug: "literalura",
-    category: "Backend · Java · API Integration",
-    description:
-      "Aplicação Java para consulta e gerenciamento de livros e autores, integrando dados de uma API externa e persistindo informações em banco de dados.",
     technologies: [
       { name: "Java", featured: true },
       { name: "Spring Boot", featured: true },
@@ -56,7 +49,9 @@ export const projects: Project[] = [
     ],
     github: "https://github.com/kant-sdev/challenge-literalura-java",
   },
-];
+] as const satisfies readonly ProjectDefinition[];
+
+export type ProjectId = (typeof projects)[number]["id"];
 
 const featuredProjectSlugs = ["finvise", "forumhub", "literalura"] as const;
 
@@ -65,3 +60,17 @@ export const featuredProjects = featuredProjectSlugs.flatMap((slug) => {
 
   return project ? [project] : [];
 });
+
+export function getProjects(locale: Locale = defaultLocale): Project[] {
+  return projects.map((project) => ({
+    ...project,
+    ...content[locale].projects.items[project.id],
+  }));
+}
+
+export function getFeaturedProjects(locale: Locale = defaultLocale): Project[] {
+  return featuredProjects.map((project) => ({
+    ...project,
+    ...content[locale].projects.items[project.id],
+  }));
+}

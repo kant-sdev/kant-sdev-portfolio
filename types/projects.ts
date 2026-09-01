@@ -21,10 +21,12 @@ export interface Project {
 
   status?: ProjectStatus;
 
-  technologies: ProjectTechnology[];
+  technologies: readonly ProjectTechnology[];
 
   image?: string;
 
   github?: string;
   demo?: string;
 }
+
+export type ProjectDefinition = Omit<Project, "category" | "description">;

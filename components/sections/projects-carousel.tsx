@@ -13,6 +13,7 @@ import { ArrowUpRight, ChevronLeft, ChevronRight } from "lucide-react";
 
 import { TechnologyTag } from "@/components/ui/technology-tag";
 import type { Project } from "@/types/projects";
+import { useLocale } from "@/components/i18n/locale-provider";
 
 const slideVariants: Variants = {
   enter: (direction: number) => ({
@@ -50,6 +51,7 @@ type ProjectSlideProps = {
 };
 
 function ProjectSlide({ project, index, total }: ProjectSlideProps) {
+  const { content } = useLocale();
   const featuredTechnologies = project.technologies.some(
     (technology) => technology.featured,
   )
@@ -63,7 +65,7 @@ function ProjectSlide({ project, index, total }: ProjectSlideProps) {
         {project.image ? (
           <Image
             src={project.image}
-            alt={`Preview do projeto ${project.title}`}
+            alt={content.projects.previewAlt(project.title)}
             fill
             sizes="(max-width: 1023px) calc(100vw - 2rem), 58vw"
             className="object-cover"
@@ -71,11 +73,11 @@ function ProjectSlide({ project, index, total }: ProjectSlideProps) {
         ) : (
           <div
             role="img"
-            aria-label={`Área preparada para o preview do projeto ${project.title}`}
+            aria-label={content.projects.previewPlaceholder(project.title)}
             className="flex h-full min-h-56 flex-col justify-between p-6 sm:min-h-72 sm:p-8"
           >
             <span className="text-[0.65rem] font-semibold tracking-[0.18em] text-muted-foreground uppercase">
-              Project preview
+              {content.projects.preview}
             </span>
             <span
               aria-hidden="true"
@@ -105,7 +107,7 @@ function ProjectSlide({ project, index, total }: ProjectSlideProps) {
         </p>
 
         <ul
-          aria-label={`Tecnologias principais de ${project.title}`}
+          aria-label={content.projects.technologies(project.title)}
           className="mt-7 flex flex-wrap gap-2"
         >
           {featuredTechnologies.map((technology) => (
@@ -127,7 +129,7 @@ function ProjectSlide({ project, index, total }: ProjectSlideProps) {
             rel="noopener noreferrer"
             className="group mt-8 inline-flex min-h-11 items-center gap-2 rounded-sm py-2 text-sm font-medium text-foreground transition-colors hover:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
           >
-            View project
+            {content.projects.viewProject}
             <ArrowUpRight
               className="size-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
               aria-hidden="true"
@@ -144,12 +146,14 @@ type ProjectsCarouselProps = {
 };
 
 export function ProjectsCarousel({ projects }: ProjectsCarouselProps) {
+  const { content } = useLocale();
+  const carousel = content.projects.carousel;
   const shouldReduceMotion = useReducedMotion();
   const [activeIndex, setActiveIndex] = useState(0);
   const [direction, setDirection] = useState(1);
 
   if (projects.length === 0) {
-    return null;
+    return <p className="mt-14 text-center text-sm text-muted-foreground">{content.projects.empty}</p>;
   }
 
   const activeProject = projects[activeIndex];
@@ -200,14 +204,14 @@ export function ProjectsCarousel({ projects }: ProjectsCarouselProps) {
   return (
     <div
       role="region"
-      aria-roledescription="carousel"
-      aria-label="Projetos em destaque"
+      aria-roledescription={carousel.role}
+      aria-label={carousel.label}
       tabIndex={0}
       onKeyDown={handleKeyDown}
       className="mt-14 overflow-hidden rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-4 focus-visible:ring-offset-background sm:mt-16"
     >
       <p className="sr-only" aria-live="polite" aria-atomic="true">
-        Projeto {activeProject.title}, {activeIndex + 1} de {projects.length}
+        {carousel.announcement(activeProject.title, activeIndex + 1, projects.length)}
       </p>
 
       <AnimatePresence initial={false} custom={direction} mode="wait">
@@ -223,8 +227,8 @@ export function ProjectsCarousel({ projects }: ProjectsCarouselProps) {
           dragConstraints={{ left: 0, right: 0 }}
           dragElastic={0.14}
           onDragEnd={handleDragEnd}
-          aria-roledescription="slide"
-          aria-label={`${activeIndex + 1} de ${projects.length}: ${activeProject.title}`}
+          aria-roledescription={carousel.slideRole}
+          aria-label={carousel.slideLabel(activeProject.title, activeIndex + 1, projects.length)}
           className="touch-pan-y border-y border-border/70 py-8 sm:py-10 lg:py-12"
         >
           <ProjectSlide
@@ -240,7 +244,7 @@ export function ProjectsCarousel({ projects }: ProjectsCarouselProps) {
           <span className="text-xs font-medium tracking-[0.14em] text-muted-foreground">
             {currentPosition} / {totalProjects}
           </span>
-          <div className="flex items-center gap-2" aria-label="Selecionar projeto">
+          <div className="flex items-center gap-2" aria-label={carousel.select}>
             {projects.map((project, index) => {
               const isActive = index === activeIndex;
 
@@ -248,7 +252,7 @@ export function ProjectsCarousel({ projects }: ProjectsCarouselProps) {
                 <button
                   key={project.id}
                   type="button"
-                  aria-label={`Ir para o projeto ${index + 1}: ${project.title}`}
+                  aria-label={carousel.goTo(project.title, index + 1)}
                   aria-current={isActive ? "true" : undefined}
                   aria-controls="featured-project-slide"
                   onClick={() => selectProject(index)}
@@ -269,7 +273,7 @@ export function ProjectsCarousel({ projects }: ProjectsCarouselProps) {
         <div className="flex items-center gap-2 self-end sm:self-auto">
           <button
             type="button"
-            aria-label="Projeto anterior"
+            aria-label={carousel.previous}
             aria-controls="featured-project-slide"
             onClick={() => changeProject(-1)}
             className="inline-flex size-11 items-center justify-center rounded-sm border border-border text-foreground transition-colors hover:border-foreground/45 hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
@@ -278,7 +282,7 @@ export function ProjectsCarousel({ projects }: ProjectsCarouselProps) {
           </button>
           <button
             type="button"
-            aria-label="Próximo projeto"
+            aria-label={carousel.next}
             aria-controls="featured-project-slide"
             onClick={() => changeProject(1)}
             className="inline-flex size-11 items-center justify-center rounded-sm border border-border text-foreground transition-colors hover:border-foreground/45 hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"

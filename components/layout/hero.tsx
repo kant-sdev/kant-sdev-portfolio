@@ -4,6 +4,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { ArrowDown, ArrowRight } from "lucide-react";
 import { motion, useReducedMotion, type Variants } from "motion/react";
+import { useLocale } from "@/components/i18n/locale-provider";
+import { LocalizedMetadata } from "@/components/i18n/localized-metadata";
 
 const heroSequence: Variants = {
   hidden: {},
@@ -50,6 +52,7 @@ const ctaBaseStyles =
   "inline-flex min-h-11 w-full items-center justify-center rounded-sm px-5 py-3 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background sm:w-auto";
 
 export function Hero() {
+  const { content } = useLocale();
   const shouldReduceMotion = useReducedMotion();
 
   return (
@@ -60,6 +63,7 @@ export function Hero() {
       variants={heroSequence}
       className="mx-auto flex min-h-[calc(100svh-3.5rem)] w-full max-w-7xl flex-col px-4 py-12 sm:px-6 sm:py-16 lg:px-8 lg:py-20"
     >
+      <LocalizedMetadata page="home" />
       <div className="flex flex-1 items-center py-8 sm:py-12 lg:py-16">
         <div className="grid w-full items-center gap-14 xl:grid-cols-[minmax(0,1fr)_minmax(18rem,0.4fr)] xl:gap-16">
           <div className="min-w-0">
@@ -77,14 +81,14 @@ export function Hero() {
               className="mt-8 flex flex-col gap-3 sm:mt-10 sm:flex-row sm:items-center sm:gap-5"
             >
               <p className="text-sm font-semibold tracking-[0.12em] text-foreground uppercase">
-                Software Engineer 
+                {content.hero.role}
               </p>
               <span
                 aria-hidden="true"
                 className="hidden h-px w-10 bg-border sm:block"
               />
               <p className="text-sm leading-6 text-muted-foreground sm:text-base">
-                Backend · Cloud · Architecture · Full Stack
+                {content.hero.specialties}
               </p>
             </motion.div>
 
@@ -92,9 +96,7 @@ export function Hero() {
               variants={revealItem}
               className="mt-7 max-w-2xl text-base leading-7 text-pretty text-muted-foreground sm:mt-8 sm:text-lg sm:leading-8"
             >
-              Construção de software com foco em sistemas backend, decisões
-              arquiteturais, infraestrutura cloud e integração entre as camadas
-              que sustentam produtos digitais.
+              {content.hero.description}
             </motion.p>
 
             <motion.div
@@ -103,18 +105,18 @@ export function Hero() {
             >
               <Link
                 href="/#projects"
-                aria-label="Ver projetos e evidências práticas"
+                aria-label={content.common.viewProjectsLabel}
                 className={`${ctaBaseStyles} gap-2 bg-foreground text-background hover:bg-foreground/85`}
               >
-                Ver projetos
+                {content.common.viewProjects}
                 <ArrowRight className="size-4" aria-hidden="true" />
               </Link>
               <Link
-                href="/mapa-tecnico"
-                aria-label="Explorar o mapa técnico e a profundidade de conhecimento"
+                href="/technical-map"
+                aria-label={content.hero.technicalMapLabel}
                 className={`${ctaBaseStyles} border border-border bg-background text-foreground hover:bg-muted`}
               >
-                Mapa técnico
+                {content.hero.technicalMap}
               </Link>
             </motion.div>
           </div>
@@ -131,7 +133,7 @@ export function Hero() {
             >
               <Image
                 src="/kant-sdev.jpeg"
-                alt="Kauã Cantanhede — Software Engineer"
+                alt={content.hero.portraitAlt}
                 width={640}
                 height={640}
                 sizes="(max-width: 639px) 272px, (max-width: 1279px) 320px, 352px"
@@ -148,10 +150,10 @@ export function Hero() {
         className="flex items-center justify-between border-t border-border/70 pt-4 text-[0.7rem] font-medium tracking-[0.16em] text-muted-foreground uppercase"
       >
         <span className="inline-flex items-center gap-2">
-          scroll / explore
+          {content.hero.explore}
           <ArrowDown className="size-3.5" aria-hidden="true" />
         </span>
-        <span className="hidden sm:inline">01 — introduction</span>
+        <span className="hidden sm:inline">{content.hero.introduction}</span>
       </motion.div>
     </motion.section>
   );

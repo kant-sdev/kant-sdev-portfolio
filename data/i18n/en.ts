@@ -1,0 +1,173 @@
+import type { Dictionary } from "./pt-BR";
+
+export const en: Dictionary = {
+  navigation: {
+    about: "About",
+    projects: "Projects",
+    technicalMap: "Technical Map",
+    contact: "Contact",
+  },
+  common: {
+    home: "Home",
+    backHome: "Back to home",
+    viewProjects: "View projects",
+    viewProjectsLabel: "View projects and practical work",
+    newTab: " (opens in a new tab)",
+    technologyContext: (name, context) => `${name} in ${context}`,
+  },
+  header: {
+    skipContent: "Skip to content",
+    homeLabel: "Go to home",
+    navigationLabel: "Main navigation",
+    mobileNavigationLabel: "Main navigation for mobile devices",
+    openMenu: "Open menu",
+    closeMenu: "Close menu",
+    languageLabel: "Site language",
+    portuguese: "Português (Brasil)",
+    english: "English",
+  },
+  hero: {
+    role: "Software Engineer",
+    specialties: "Backend · Cloud · Architecture · Full Stack",
+    description:
+      "Building software with a focus on backend systems, architectural decisions, cloud infrastructure, and integration across the layers that support digital products.",
+    technicalMap: "Technical map",
+    technicalMapLabel: "Explore the technical map and depth of knowledge",
+    portraitAlt: "Kauã Cantanhede — Software Engineer",
+    explore: "scroll / explore",
+    introduction: "01 — introduction",
+  },
+  about: {
+    eyebrow: "About",
+    title: "Building software with a systems perspective.",
+    paragraphs: [
+      "My journey in technology began with computer networks and infrastructure, shaping a perspective that goes beyond code and considers the different layers that make a system work. That foundation led me to software development and studies in Systems Analysis and Development.",
+      "Today, I am building my path in software engineering, focusing on the Java and Spring ecosystem, APIs, databases, architecture, cloud computing, and DevOps. At the same time, I maintain a full stack perspective and explore different technologies to understand how the parts of an application connect.",
+      "This intersection of software, architecture, and infrastructure is where I have been focusing my projects. Cloud computing, automation, and artificial intelligence complement that foundation, while hands-on work turns knowledge into increasingly cohesive solutions.",
+    ],
+    credentials: "Credentials",
+    certifications: "Certifications",
+    achievements: "Achievements",
+    programs: "Programs",
+    openCredential: (title) => `Open official credential: ${title}`,
+  },
+  coreStack: {
+    title: "Core Stack",
+    description:
+      "The technologies I use to build applications, bringing together backend, data, frontend, and infrastructure.",
+    explore: "Explore technical map",
+    categories: {
+      "backend-software-engineering": "Backend & Software Engineering",
+      "data-persistence": "Data & Persistence",
+      frontend: "Frontend Development",
+      "cloud-devops": "Cloud & DevOps",
+    },
+  },
+  projects: {
+    eyebrow: "Projects",
+    title: "Projects that reflect my growth in software engineering.",
+    viewAll: "View all projects",
+    viewProject: "View project",
+    preview: "Project preview",
+    previewAlt: (title) => `Preview of the ${title} project`,
+    previewPlaceholder: (title) => `Placeholder for the ${title} project preview`,
+    technologies: (title) => `Core technologies used in ${title}`,
+    empty: "No projects published yet.",
+    carousel: {
+      label: "Featured projects",
+      role: "carousel",
+      slideRole: "slide",
+      select: "Select project",
+      previous: "Previous project",
+      next: "Next project",
+      announcement: (title, position, total) => `Project ${title}, ${position} of ${total}`,
+      slideLabel: (title, position, total) => `${position} of ${total}: ${title}`,
+      goTo: (title, position) => `Go to project ${position}: ${title}`,
+    },
+    items: {
+      finvise: {
+        category: "Product · Hackathon · Full Stack",
+        description:
+          "A financial intelligence platform that turns transactions and bank statements into financial analyses, recommendations, and interactions with a conversational agent.",
+      },
+      forumhub: {
+        category: "Backend · REST API · Java",
+        description:
+          "A REST API for a forum system, built with Java and Spring Boot using layered architecture, data persistence, and authentication.",
+      },
+      literalura: {
+        category: "Backend · Java · API Integration",
+        description:
+          "A Java application for searching and managing books and authors, integrating data from an external API and persisting information in a database.",
+      },
+    },
+  },
+  contact: {
+    eyebrow: "Contact",
+    title: "Let's talk.",
+    description:
+      "Whether it is a professional opportunity, a project, or an idea worth exploring, I am open to new conversations.",
+    connect: "Connect",
+    connectDescription: "You can also find me here.",
+    channels: {
+      github: "GitHub",
+      linkedin: "LinkedIn",
+      email: "Email",
+    },
+    form: {
+      title: "Send a message",
+      name: "Name",
+      email: "Email",
+      message: "Message",
+      namePlaceholder: "Your name",
+      emailPlaceholder: "you@email.com",
+      messagePlaceholder: "How can I help?",
+      submit: "Send message",
+      submitting: "Sending...",
+      success: "Message sent. Thank you for getting in touch.",
+      error: "Unable to send your message right now. Try again or use one of the other contact channels.",
+      unavailable: "Direct messaging is not connected yet. Please use one of the other contact channels.",
+      validation: {
+        nameRequired: "Enter your name.",
+        emailRequired: "Enter your email.",
+        messageRequired: "Briefly describe how I can help.",
+        emailInvalid: "Enter a valid email address.",
+      },
+    },
+  },
+  footer: {
+    importantLinks: "Important Links",
+    importantLinksLabel: "Important footer links",
+    social: "Social",
+    noSocialLinks: "Links not yet published.",
+    other: "Other",
+    otherLinksLabel: "Other footer links",
+    copyright: "Copyright",
+  },
+  notFound: {
+    eyebrow: "404 / Not Found",
+    title: "This page does not exist.",
+    description: "The requested address does not match any available resource in this portfolio.",
+  },
+  projectPage: {
+    title: "Project not found",
+    description: "This project does not have a page available yet.",
+  },
+  technicalMap: {
+    eyebrow: "Under construction",
+    title: "Technical Map",
+    description: "This page is being built and will be available soon.",
+  },
+  trajectory: {
+    title: "Trajectory",
+    empty: "No milestones published yet.",
+  },
+  metadata: {
+    home: { title: "kant-sdev | Portfolio", description: "The professional portfolio of kant-sdev." },
+    projects: { title: "Projects | kant-sdev", description: "Software engineering projects by kant-sdev." },
+    project: { title: "Project | kant-sdev", description: "Details of a software engineering project by kant-sdev." },
+    technicalMap: { title: "Technical Map | kant-sdev", description: "Software engineering technologies and skills of kant-sdev." },
+    trajectory: { title: "Trajectory | kant-sdev", description: "Education, experience, and professional journey of kant-sdev." },
+    notFound: { title: "404 — Page not found | Kant Cantanhede", description: "The requested page could not be found." },
+  },
+};

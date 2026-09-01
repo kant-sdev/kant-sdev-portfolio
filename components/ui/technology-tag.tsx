@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { useLocale } from "@/components/i18n/locale-provider";
 import type { IconType } from "react-icons";
 import { FaAws, FaJava, FaLinux } from "react-icons/fa";
 import { GrOracle } from "react-icons/gr";
@@ -72,6 +75,7 @@ export function TechnologyTag({
   emphasis,
   size = "default",
 }: TechnologyTagProps) {
+  const { content: dictionary } = useLocale();
   const presentation = technologyPresentation[name];
   const Icon = presentation?.icon ?? TbCode;
   const iconColor = presentation?.iconColor ?? "text-muted-foreground";
@@ -103,7 +107,7 @@ export function TechnologyTag({
   return (
     <Link
       href={href}
-      aria-label={context ? `${name} em ${context}` : name}
+      aria-label={context ? dictionary.common.technologyContext(name, context) : name}
       className={`${className} focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background`}
     >
       {content}

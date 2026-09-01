@@ -4,6 +4,7 @@ import Image from "next/image";
 import { motion, useReducedMotion, type Variants } from "motion/react";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import { useLocale } from "@/components/i18n/locale-provider";
 
 const aboutSequence: Variants = {
   hidden: {},
@@ -134,6 +135,7 @@ function CredentialItem({
   href,
   prominence,
 }: Credential) {
+  const { content } = useLocale();
   const isPrimary = prominence === "primary";
 
   return (
@@ -142,7 +144,7 @@ function CredentialItem({
         href={href}
         target="_blank"
         rel="noopener noreferrer"
-        aria-label={`Abrir credencial oficial: ${title}`}
+        aria-label={content.about.openCredential(title)}
         className="group block rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-4 focus-visible:ring-offset-background"
       >
         <Image
@@ -182,6 +184,7 @@ function CredentialItem({
 }
 
 export function About() {
+  const { content } = useLocale();
   const shouldReduceMotion = useReducedMotion();
 
   return (
@@ -201,7 +204,7 @@ export function About() {
               variants={revealContent}
               className="text-xs font-semibold tracking-[0.18em] text-foreground uppercase"
             >
-              About
+              {content.about.eyebrow}
             </motion.p>
 
             <motion.h2
@@ -209,41 +212,23 @@ export function About() {
               variants={revealContent}
               className="mt-5 max-w-4xl text-[clamp(2.25rem,4.5vw,4.5rem)] leading-[0.98] font-semibold tracking-[-0.06em] text-balance text-foreground"
             >
-              Construindo software com visão de sistema.
+              {content.about.title}
             </motion.h2>
 
             <motion.div
               variants={revealContent}
               className="mt-10 max-w-3xl space-y-6 text-sm leading-7 text-pretty text-muted-foreground sm:mt-12 sm:text-base sm:leading-8"
             >
-              <p>
-                Minha trajetória em tecnologia começou em redes de computadores e
-                infraestrutura, construindo uma visão que vai além do código e considera
-                as diferentes camadas que fazem um sistema funcionar. Essa base me levou
-                ao desenvolvimento de software e à formação em Análise e Desenvolvimento
-                de Sistemas.
-              </p>
-
-              <p>
-                Hoje, venho construindo meu caminho em engenharia de software, com foco no
-                ecossistema Java e Spring, APIs, bancos de dados, arquitetura, cloud e
-                DevOps. Ao mesmo tempo, mantenho uma visão full stack e exploro diferentes
-                tecnologias para entender como as partes de uma aplicação se conectam.
-              </p>
-
-              <p>
-                É nessa interseção entre software, arquitetura e infraestrutura que venho
-                concentrando meus projetos. Cloud, automação e inteligência artificial
-                complementam essa base, enquanto a prática transforma conhecimento em
-                soluções cada vez mais coesas.
-              </p>
+              {content.about.paragraphs.map((paragraph, index) => (
+                <p key={index}>{paragraph}</p>
+              ))}
             </motion.div>
             <Link
                 href="/#projects"
-                aria-label="Ver projetos e evidências práticas"
+                aria-label={content.common.viewProjectsLabel}
                 className={`${ctaBaseStyles} gap-2 bg-foreground text-background hover:bg-foreground/85`}
               >
-                Ver projetos
+                {content.common.viewProjects}
                 <ArrowRight className="size-4" aria-hidden="true" />
               </Link>
           </motion.div>
@@ -257,7 +242,7 @@ export function About() {
               id="credentials-title"
               className="text-xs font-semibold tracking-[0.18em] text-foreground uppercase"
             >
-              Credentials
+              {content.about.credentials}
             </h3>
 
             <div className="mt-10 space-y-12">
@@ -266,7 +251,7 @@ export function About() {
                   id="credentials-certifications-title"
                   className="border-b border-border/70 pb-3 text-[0.7rem] font-semibold tracking-[0.16em] text-muted-foreground uppercase"
                 >
-                  Certifications
+                  {content.about.certifications}
                 </h4>
                 <motion.ol
                   variants={credentialSequence}
@@ -286,7 +271,7 @@ export function About() {
                   id="credentials-programs-title"
                   className="border-b border-border/70 pb-3 text-[0.7rem] font-semibold tracking-[0.16em] text-muted-foreground uppercase"
                 >
-                  Programs
+                  {content.about.programs}
                 </h4>
                 <motion.ul
                   variants={credentialSequence}
@@ -314,7 +299,7 @@ export function About() {
                   id="credentials-achievements-title"
                   className="border-b border-border/70 pb-3 text-[0.7rem] font-semibold tracking-[0.16em] text-muted-foreground uppercase"
                 >
-                  Achievements
+                  {content.about.achievements}
                 </h4>
                 <motion.ol
                   variants={credentialSequence}
