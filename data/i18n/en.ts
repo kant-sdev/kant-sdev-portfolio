@@ -38,7 +38,7 @@ export const en: Dictionary = {
     introduction: "01 — introduction",
   },
   about: {
-    eyebrow: "About",
+    eyebrow: "02 — About",
     title: "Building software with a systems perspective.",
     paragraphs: [
       "My journey in technology began with computer networks and infrastructure, shaping a perspective that goes beyond code and considers the different layers that make a system work. That foundation led me to software development and studies in Systems Analysis and Development.",
@@ -52,19 +52,21 @@ export const en: Dictionary = {
     openCredential: (title) => `Open official credential: ${title}`,
   },
   coreStack: {
+    eyebrow: "03 — Core Stack",
     title: "Core Stack",
     description:
       "The technologies I use to build applications, bringing together backend, data, frontend, and infrastructure.",
     explore: "Explore technical map",
     categories: {
-      "backend-software-engineering": "Backend & Software Engineering",
+      backend: "Backend",
+      "software-engineering-architecture": "Software Engineering & Architecture",
       "data-persistence": "Data & Persistence",
       frontend: "Frontend Development",
       "cloud-devops": "Cloud & DevOps",
     },
   },
   projects: {
-    eyebrow: "Projects",
+    eyebrow: "04 — Projects",
     title: "Projects that reflect my growth in software engineering.",
     viewAll: "View all projects",
     viewProject: "View project",
@@ -103,7 +105,7 @@ export const en: Dictionary = {
     },
   },
   contact: {
-    eyebrow: "Contact",
+    eyebrow: "05 — Contact",
     title: "Let's talk.",
     description:
       "Whether it is a professional opportunity, a project, or an idea worth exploring, I am open to new conversations.",

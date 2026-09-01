@@ -108,7 +108,7 @@ export function TechnologyTag({
     <Link
       href={href}
       aria-label={context ? dictionary.common.technologyContext(name, context) : name}
-      className={`${className} focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background`}
+      className={`${className} cursor-pointer transition-[color,background-color,border-color,box-shadow,transform] hover:-translate-y-0.5 hover:shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background motion-reduce:transform-none motion-reduce:transition-colors`}
     >
       {content}
     </Link>

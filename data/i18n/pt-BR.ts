@@ -42,7 +42,7 @@ export const ptBR = {
     introduction: "01 — introdução",
   },
   about: {
-    eyebrow: "Sobre",
+    eyebrow: "02 — Sobre",
     title: "Construindo software com visão de sistema.",
     paragraphs: [
       "Minha trajetória em tecnologia começou em redes de computadores e infraestrutura, construindo uma visão que vai além do código e considera as diferentes camadas que fazem um sistema funcionar. Essa base me levou ao desenvolvimento de software e à formação em Análise e Desenvolvimento de Sistemas.",
@@ -56,19 +56,21 @@ export const ptBR = {
     openCredential: (title: string) => `Abrir credencial oficial: ${title}`,
   },
   coreStack: {
+    eyebrow: "03 — Stack principal",
     title: "Tecnologias principais",
     description:
       "As tecnologias que utilizo para construir aplicações, integrando backend, dados, frontend e infraestrutura.",
     explore: "Explorar mapa técnico",
     categories: {
-      "backend-software-engineering": "Backend e engenharia de software",
+      backend: "Backend",
+      "software-engineering-architecture": "Engenharia de Software e Arquitetura",
       "data-persistence": "Dados e persistência",
       frontend: "Desenvolvimento frontend",
       "cloud-devops": "Nuvem e DevOps",
     } satisfies Record<CoreStackId, string>,
   },
   projects: {
-    eyebrow: "Projetos",
+    eyebrow: "04 — Projetos",
     title: "Projetos que representam minha evolução em engenharia de software.",
     viewAll: "Ver todos os projetos",
     viewProject: "Ver projeto",
@@ -109,7 +111,7 @@ export const ptBR = {
     } satisfies Record<ProjectId, Pick<Project, "category" | "description">>,
   },
   contact: {
-    eyebrow: "Contato",
+    eyebrow: "05 — Contato",
     title: "Vamos conversar.",
     description:
       "Seja para uma oportunidade profissional, um projeto ou uma ideia que vale a pena explorar, estou aberto a novas conversas.",

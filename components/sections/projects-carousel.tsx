@@ -44,6 +44,89 @@ const reducedSlideVariants: Variants = {
   exit: { opacity: 1, x: 0, transition: { duration: 0 } },
 };
 
+const projectRevealSequence: Variants = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.08,
+    },
+  },
+};
+
+const revealProjectPreview: Variants = {
+  hidden: {
+    opacity: 0,
+    y: 10,
+    scale: 0.99,
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      duration: 0.42,
+      ease: [0.22, 1, 0.36, 1],
+    },
+  },
+};
+
+const projectContentSequence: Variants = {
+  hidden: {},
+  visible: {
+    transition: {
+      delayChildren: 0.04,
+      staggerChildren: 0.06,
+    },
+  },
+};
+
+const revealProjectItem: Variants = {
+  hidden: {
+    opacity: 0,
+    y: 12,
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.38,
+      ease: [0.22, 1, 0.36, 1],
+    },
+  },
+};
+
+const projectTechnologySequence: Variants = {
+  hidden: {
+    opacity: 0,
+    y: 8,
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.34,
+      delayChildren: 0.04,
+      staggerChildren: 0.04,
+      ease: [0.22, 1, 0.36, 1],
+    },
+  },
+};
+
+const revealProjectTag: Variants = {
+  hidden: {
+    opacity: 0,
+    y: 6,
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.28,
+      ease: [0.22, 1, 0.36, 1],
+    },
+  },
+};
+
 type ProjectSlideProps = {
   project: Project;
   index: number;
@@ -52,6 +135,7 @@ type ProjectSlideProps = {
 
 function ProjectSlide({ project, index, total }: ProjectSlideProps) {
   const { content } = useLocale();
+  const shouldReduceMotion = useReducedMotion();
   const featuredTechnologies = project.technologies.some(
     (technology) => technology.featured,
   )
@@ -60,8 +144,17 @@ function ProjectSlide({ project, index, total }: ProjectSlideProps) {
   const projectNumber = String(index + 1).padStart(2, "0");
 
   return (
-    <div className="grid items-center gap-8 lg:grid-cols-[minmax(0,1.2fr)_minmax(20rem,0.8fr)] lg:gap-14">
-      <div className="relative aspect-[16/10] min-w-0 overflow-hidden rounded-sm border border-border bg-muted/35">
+    <motion.div
+      initial={shouldReduceMotion ? false : "hidden"}
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.2 }}
+      variants={projectRevealSequence}
+      className="grid items-center gap-8 lg:grid-cols-[minmax(0,1.2fr)_minmax(20rem,0.8fr)] lg:gap-14"
+    >
+      <motion.div
+        variants={revealProjectPreview}
+        className="relative aspect-[16/10] min-w-0 overflow-hidden rounded-sm border border-border bg-muted/35 transition-[border-color,box-shadow,transform] duration-300 hover:-translate-y-0.5 hover:border-foreground/25 hover:shadow-sm motion-reduce:transform-none motion-reduce:transition-none"
+      >
         {project.image ? (
           <Image
             src={project.image}
@@ -90,40 +183,54 @@ function ProjectSlide({ project, index, total }: ProjectSlideProps) {
             </span>
           </div>
         )}
-      </div>
+      </motion.div>
 
-      <div className="min-w-0">
-        <p className="text-xs font-semibold tracking-[0.16em] text-muted-foreground uppercase">
+      <motion.div variants={projectContentSequence} className="min-w-0">
+        <motion.p
+          variants={revealProjectItem}
+          className="text-xs font-semibold tracking-[0.16em] text-muted-foreground uppercase"
+        >
           {projectNumber} / {String(total).padStart(2, "0")}
-        </p>
-        <h3 className="mt-4 text-[clamp(2.5rem,6vw,4.75rem)] leading-[0.95] font-semibold tracking-[-0.065em] text-balance text-foreground">
+        </motion.p>
+        <motion.h3
+          variants={revealProjectItem}
+          className="mt-4 text-[clamp(2.5rem,6vw,4.75rem)] leading-[0.95] font-semibold tracking-[-0.065em] text-balance text-foreground"
+        >
           {project.title}
-        </h3>
-        <p className="mt-5 text-xs leading-6 font-medium tracking-[0.1em] text-foreground uppercase">
+        </motion.h3>
+        <motion.p
+          variants={revealProjectItem}
+          className="mt-5 text-xs leading-6 font-medium tracking-[0.1em] text-foreground uppercase"
+        >
           {project.category}
-        </p>
-        <p className="mt-6 text-sm leading-7 text-pretty text-muted-foreground sm:text-base sm:leading-8">
+        </motion.p>
+        <motion.p
+          variants={revealProjectItem}
+          className="mt-6 text-sm leading-7 text-pretty text-muted-foreground sm:text-base sm:leading-8"
+        >
           {project.description}
-        </p>
+        </motion.p>
 
-        <ul
+        <motion.ul
+          variants={projectTechnologySequence}
           aria-label={content.projects.technologies(project.title)}
           className="mt-7 flex flex-wrap gap-2"
         >
           {featuredTechnologies.map((technology) => (
-            <li key={technology.name}>
+            <motion.li key={technology.name} variants={revealProjectTag}>
               <TechnologyTag
                 name={technology.name}
                 href={technology.href}
                 context={project.title}
                 size="compact"
               />
-            </li>
+            </motion.li>
           ))}
-        </ul>
+        </motion.ul>
 
         {project.github ? (
-          <a
+          <motion.a
+            variants={revealProjectItem}
             href={project.github}
             target="_blank"
             rel="noopener noreferrer"
@@ -134,10 +241,10 @@ function ProjectSlide({ project, index, total }: ProjectSlideProps) {
               className="size-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
               aria-hidden="true"
             />
-          </a>
+          </motion.a>
         ) : null}
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 }
 
@@ -239,7 +346,13 @@ export function ProjectsCarousel({ projects }: ProjectsCarouselProps) {
         </motion.article>
       </AnimatePresence>
 
-      <div className="flex flex-col gap-5 border-b border-border/70 py-5 sm:flex-row sm:items-center sm:justify-between">
+      <motion.div
+        initial={shouldReduceMotion ? false : "hidden"}
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.4 }}
+        variants={revealProjectItem}
+        className="flex flex-col gap-5 border-b border-border/70 py-5 sm:flex-row sm:items-center sm:justify-between"
+      >
         <div className="flex items-center gap-5">
           <span className="text-xs font-medium tracking-[0.14em] text-muted-foreground">
             {currentPosition} / {totalProjects}
@@ -290,7 +403,7 @@ export function ProjectsCarousel({ projects }: ProjectsCarouselProps) {
             <ChevronRight className="size-4" aria-hidden="true" />
           </button>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 }

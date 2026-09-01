@@ -9,12 +9,7 @@ import { LocalizedMetadata } from "@/components/i18n/localized-metadata";
 
 const heroSequence: Variants = {
   hidden: {},
-  visible: {
-    transition: {
-      delayChildren: 0.08,
-      staggerChildren: 0.08,
-    },
-  },
+  visible: {},
 };
 
 const revealItem: Variants = {
@@ -22,11 +17,37 @@ const revealItem: Variants = {
     opacity: 0,
     y: 14,
   },
-  visible: {
+  visible: (order = 0) => ({
     opacity: 1,
     y: 0,
     transition: {
       duration: 0.48,
+      delay: 0.08 + order * 0.07,
+      ease: [0.22, 1, 0.36, 1],
+    },
+  }),
+};
+
+const ctaSequence: Variants = {
+  hidden: {},
+  visible: {
+    transition: {
+      delayChildren: 0.38,
+      staggerChildren: 0.06,
+    },
+  },
+};
+
+const revealCta: Variants = {
+  hidden: {
+    opacity: 0,
+    y: 10,
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.4,
       ease: [0.22, 1, 0.36, 1],
     },
   },
@@ -42,14 +63,14 @@ const revealPhoto: Variants = {
     y: 0,
     transition: {
       duration: 0.52,
-      delay: 0.12,
+      delay: 0.5,
       ease: [0.22, 1, 0.36, 1],
     },
   },
 };
 
 const ctaBaseStyles =
-  "inline-flex min-h-11 w-full items-center justify-center rounded-sm px-5 py-3 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background sm:w-auto";
+  "group inline-flex min-h-11 w-full items-center justify-center rounded-sm px-5 py-3 text-sm font-medium transition-[color,background-color,border-color,transform] hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background motion-reduce:transform-none motion-reduce:transition-colors sm:w-auto";
 
 export function Hero() {
   const { content } = useLocale();
@@ -69,6 +90,7 @@ export function Hero() {
           <div className="min-w-0">
             <motion.h1
               id="hero-title"
+              custom={1}
               variants={revealItem}
               className="text-[clamp(3.25rem,10vw,8.5rem)] leading-[0.9] font-semibold tracking-[-0.08em] text-balance text-foreground"
             >
@@ -76,23 +98,31 @@ export function Hero() {
               <span className="block">Cantanhêde</span>
             </motion.h1>
 
-            <motion.div
-              variants={revealItem}
-              className="mt-8 flex flex-col gap-3 sm:mt-10 sm:flex-row sm:items-center sm:gap-5"
-            >
-              <p className="text-sm font-semibold tracking-[0.12em] text-foreground uppercase">
+            <div className="mt-8 flex flex-col gap-3 sm:mt-10 sm:flex-row sm:items-center sm:gap-5">
+              <motion.p
+                custom={0}
+                variants={revealItem}
+                className="text-sm font-semibold tracking-[0.12em] text-foreground uppercase"
+              >
                 {content.hero.role}
-              </p>
-              <span
+              </motion.p>
+              <motion.span
+                custom={2}
+                variants={revealItem}
                 aria-hidden="true"
                 className="hidden h-px w-10 bg-border sm:block"
               />
-              <p className="text-sm leading-6 text-muted-foreground sm:text-base">
+              <motion.p
+                custom={2}
+                variants={revealItem}
+                className="text-sm leading-6 text-muted-foreground sm:text-base"
+              >
                 {content.hero.specialties}
-              </p>
-            </motion.div>
+              </motion.p>
+            </div>
 
             <motion.p
+              custom={3}
               variants={revealItem}
               className="mt-7 max-w-2xl text-base leading-7 text-pretty text-muted-foreground sm:mt-8 sm:text-lg sm:leading-8"
             >
@@ -100,24 +130,31 @@ export function Hero() {
             </motion.p>
 
             <motion.div
-              variants={revealItem}
+              variants={ctaSequence}
               className="mt-9 flex flex-col gap-3 sm:mt-10 sm:flex-row sm:items-center"
             >
-              <Link
-                href="/#projects"
-                aria-label={content.common.viewProjectsLabel}
-                className={`${ctaBaseStyles} gap-2 bg-foreground text-background hover:bg-foreground/85`}
-              >
-                {content.common.viewProjects}
-                <ArrowRight className="size-4" aria-hidden="true" />
-              </Link>
-              <Link
-                href="/technical-map"
-                aria-label={content.hero.technicalMapLabel}
-                className={`${ctaBaseStyles} border border-border bg-background text-foreground hover:bg-muted`}
-              >
-                {content.hero.technicalMap}
-              </Link>
+              <motion.div variants={revealCta} className="w-full sm:w-auto">
+                <Link
+                  href="/#projects"
+                  aria-label={content.common.viewProjectsLabel}
+                  className={`${ctaBaseStyles} gap-2 bg-foreground text-background hover:bg-foreground/85`}
+                >
+                  {content.common.viewProjects}
+                  <ArrowRight
+                    className="size-4 transition-transform duration-200 group-hover:translate-x-0.5 motion-reduce:transform-none motion-reduce:transition-none"
+                    aria-hidden="true"
+                  />
+                </Link>
+              </motion.div>
+              <motion.div variants={revealCta} className="w-full sm:w-auto">
+                <Link
+                  href="/technical-map"
+                  aria-label={content.hero.technicalMapLabel}
+                  className={`${ctaBaseStyles} border border-border bg-background text-foreground hover:bg-muted`}
+                >
+                  {content.hero.technicalMap}
+                </Link>
+              </motion.div>
             </motion.div>
           </div>
 
@@ -146,6 +183,7 @@ export function Hero() {
       </div>
 
       <motion.div
+        custom={6}
         variants={revealItem}
         className="flex items-center justify-between border-t border-border/70 pt-4 text-[0.7rem] font-medium tracking-[0.16em] text-muted-foreground uppercase"
       >
@@ -153,7 +191,7 @@ export function Hero() {
           {content.hero.explore}
           <ArrowDown className="size-3.5" aria-hidden="true" />
         </span>
-        <span className="hidden sm:inline">{content.hero.introduction}</span>
+        <span>{content.hero.introduction}</span>
       </motion.div>
     </motion.section>
   );

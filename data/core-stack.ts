@@ -11,7 +11,7 @@ export type CoreStackGroup = {
 
 export const coreStack = [
   {
-    id: "backend-software-engineering",
+    id: "backend",
     technologies: [
       {
         name: "Java",
@@ -35,6 +35,29 @@ export const coreStack = [
       {
         name: "Spring Security",
         href: "/technical-map#backend",
+      },
+    ],
+  },
+  {
+    id: "software-engineering-architecture",
+    technologies: [
+      {
+        name: "Clean Architecture",
+        href: "/technical-map#software-architecture",
+        emphasis: "primary",
+      },
+      {
+        name: "SOLID",
+        href: "/technical-map#software-engineering",
+        emphasis: "secondary",
+      },
+      {
+        name: "Design Patterns",
+        href: "/technical-map#software-engineering",
+      },
+      {
+        name: "Clean Code",
+        href: "/technical-map#software-engineering",
       },
     ],
   },

@@ -5,7 +5,7 @@ export const navigation = [
   },
   {
     id: "projects",
-    href: "/projects",
+    href: "/#projects",
   },
   {
     id: "technicalMap",

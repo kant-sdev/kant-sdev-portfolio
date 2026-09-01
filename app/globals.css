@@ -126,5 +126,24 @@
   }
   html {
     @apply font-sans;
+    scroll-behavior: smooth;
+    scroll-padding-top: 3.5rem;
+  }
+}
+
+@layer utilities {
+  .section-surface {
+    background-image: linear-gradient(
+      to bottom,
+      transparent,
+      color-mix(in oklab, var(--muted) 35%, transparent),
+      transparent
+    );
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
   }
 }

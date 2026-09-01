@@ -34,11 +34,11 @@ const revealContent: Variants = {
 const revealSidebar: Variants = {
   hidden: {
     opacity: 0,
-    x: 15,
+    y: 15,
   },
   visible: {
     opacity: 1,
-    x: 0,
+    y: 0,
     transition: {
       duration: 0.5,
       delay: 0.16,
@@ -125,7 +125,7 @@ const achievements: Credential[] = [
   },
 ];
 
-const ctaBaseStyles = "inline-flex min-h-11 w-full mt-5 items-center justify-center rounded-sm px-5 py-3 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background sm:w-auto";
+const ctaBaseStyles = "group mt-5 inline-flex min-h-11 w-full items-center justify-center rounded-sm px-5 py-3 text-sm font-medium transition-[color,background-color,transform] hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background motion-reduce:transform-none motion-reduce:transition-colors sm:w-auto";
 function CredentialItem({
   badge,
   badgeAlt,
@@ -216,25 +216,35 @@ export function About() {
             </motion.h2>
 
             <motion.div
-              variants={revealContent}
+              variants={aboutSequence}
               className="mt-10 max-w-3xl space-y-6 text-sm leading-7 text-pretty text-muted-foreground sm:mt-12 sm:text-base sm:leading-8"
             >
               {content.about.paragraphs.map((paragraph, index) => (
-                <p key={index}>{paragraph}</p>
+                <motion.p key={index} variants={revealContent}>
+                  {paragraph}
+                </motion.p>
               ))}
             </motion.div>
-            <Link
+            <motion.div variants={revealContent}>
+              <Link
                 href="/#projects"
                 aria-label={content.common.viewProjectsLabel}
                 className={`${ctaBaseStyles} gap-2 bg-foreground text-background hover:bg-foreground/85`}
               >
                 {content.common.viewProjects}
-                <ArrowRight className="size-4" aria-hidden="true" />
+                <ArrowRight
+                  className="size-4 transition-transform duration-200 group-hover:translate-x-0.5 motion-reduce:transform-none motion-reduce:transition-none"
+                  aria-hidden="true"
+                />
               </Link>
+            </motion.div>
           </motion.div>
 
           <motion.aside
             aria-labelledby="credentials-title"
+            initial={shouldReduceMotion ? false : "hidden"}
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.15 }}
             variants={revealSidebar}
             className="border-t border-border/70 pt-8 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-10 xl:pl-14"
           >

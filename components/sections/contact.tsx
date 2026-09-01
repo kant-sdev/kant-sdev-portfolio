@@ -212,7 +212,7 @@ export function Contact() {
       whileInView="visible"
       viewport={{ once: true, amount: 0.08 }}
       variants={sectionSequence}
-      className="scroll-mt-14 border-t border-border/70"
+      className="section-surface scroll-mt-14 border-t border-border/70"
     >
       <div className="mx-auto w-full max-w-7xl px-4 py-20 sm:px-6 sm:py-24 lg:px-8 lg:py-32">
         <motion.header variants={sectionSequence} className="max-w-4xl">
@@ -243,6 +243,9 @@ export function Contact() {
         >
           <motion.section
             variants={revealContent}
+            initial={shouldReduceMotion ? false : "hidden"}
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
             aria-labelledby="connect-title"
             className="min-w-0 py-10 lg:pr-12 xl:pr-16"
           >
@@ -272,6 +275,9 @@ export function Contact() {
 
           <motion.section
             variants={revealContent}
+            initial={shouldReduceMotion ? false : "hidden"}
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.15 }}
             aria-labelledby="contact-form-title"
             className="min-w-0 border-t border-border/70 py-10 lg:border-t-0 lg:border-l lg:pl-12 xl:pl-16"
           >
@@ -371,7 +377,7 @@ export function Contact() {
                 <button
                   type="submit"
                   disabled={formStatus === "submitting"}
-                  className="group inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-sm bg-foreground px-5 py-3 text-sm font-medium text-background transition-colors hover:bg-foreground/85 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-wait disabled:opacity-60 motion-reduce:transition-none sm:w-auto"
+                  className="group inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-sm bg-foreground px-5 py-3 text-sm font-medium text-background transition-[background-color,transform] hover:-translate-y-0.5 hover:bg-foreground/85 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-wait disabled:transform-none disabled:opacity-60 motion-reduce:transform-none motion-reduce:transition-none sm:w-auto"
                 >
                   {formStatus === "submitting"
                     ? formContent.submitting
